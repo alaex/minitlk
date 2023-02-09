@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aen-naas <aen-naas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/01 12:20:18 by aen-naas          #+#    #+#             */
-/*   Updated: 2023/02/08 09:40:47 by aen-naas         ###   ########.fr       */
+/*   Created: 2023/02/08 09:03:35 by aen-naas          #+#    #+#             */
+/*   Updated: 2023/02/08 16:15:28 by aen-naas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ int	power(int a, int power)
 	return (a);
 }
 
+void	send(int *i, int pid)
+{
+	if (g_word == 0)
+		kill(pid, SIGUSR2);
+	else
+	{
+		ft_printf("%c", g_word);
+		(*i) = 7;
+		g_word = 0;
+	}
+}
+
 void	signalHandler(int signalNum, siginfo_t *info, void *walo)
 {
 	static int	curpid;
@@ -41,20 +53,16 @@ void	signalHandler(int signalNum, siginfo_t *info, void *walo)
 		curpid = info->si_pid;
 	if (curpid != info->si_pid)
 	{
+		g_word = 0;
 		i = 7;
 		curpid = 0;
-		g_word = 0;
 	}
 	if (signalNum == SIGUSR1)
 		g_word += power(2, i);
 	else if (signalNum == SIGUSR2)
 		g_word = power(g_word, -1);
-	if (!i)
-	{
-		ft_printf("%c", g_word);
-		g_word = 0;
-		i = 7;
-	}
+	if (i == 0)
+		send(&i, curpid);
 	else
 		i--;
 }
