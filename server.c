@@ -6,7 +6,7 @@
 /*   By: aen-naas <aen-naas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 12:20:18 by aen-naas          #+#    #+#             */
-/*   Updated: 2023/02/08 09:40:47 by aen-naas         ###   ########.fr       */
+/*   Updated: 2023/02/09 20:04:34 by aen-naas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	power(int a, int power)
 	return (a);
 }
 
-void	signalHandler(int signalNum, siginfo_t *info, void *walo)
+void	signalhandler(int signalnum, siginfo_t *info, void *walo)
 {
 	static int	curpid;
 	static int	i = 7;
@@ -45,9 +45,9 @@ void	signalHandler(int signalNum, siginfo_t *info, void *walo)
 		curpid = 0;
 		g_word = 0;
 	}
-	if (signalNum == SIGUSR1)
+	if (signalnum == SIGUSR1)
 		g_word += power(2, i);
-	else if (signalNum == SIGUSR2)
+	else if (signalnum == SIGUSR2)
 		g_word = power(g_word, -1);
 	if (!i)
 	{
@@ -64,7 +64,7 @@ int	main(void)
 	struct sigaction	action;
 
 	action.sa_flags = SIGINFO;
-	action.sa_sigaction = &signalHandler;
+	action.sa_sigaction = &signalhandler;
 	ft_printf("\n");
 	ft_printf(BOLD KHDER" ▄▀▀█▄   ▄▀▀▀▀▄      ▄▀▀█▄   ▄▀▀█▄▄▄▄ \n");
 	ft_printf(KHDER"▐ ▄▀ ▀▄ █    █      ▐ ▄▀ ▀▄ ▐  ▄▀   ▐ \n");
